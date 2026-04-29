@@ -288,7 +288,35 @@ const MACHINES = [
     ]
   }
 ];
-
+{
+  id: 'psmc', 
+  customer: 'PSMC', 
+  title: 'PSMC 機台',
+  subtitle: 'PSMC SOP 手冊',
+  desc: 'PSMC 機台測試 SOP',
+  color: 'yellow', 
+  tags: ['PSMC','SOP'], 
+  slides: 53, 
+  icon: '◆',
+  pdf: 'PSMC-EQ LP (modbus) SOP.pdf',
+  toc: [
+    {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁']}
+  ]
+{
+  id: 'micron', 
+  customer: 'MICRON', 
+  title: 'MICRON 機台',
+  subtitle: 'MICRON SOP 手冊',
+  desc: 'MICRON 機台測試 SOP',
+  color: 'red', 
+  tags: ['MICRON','SOP'], 
+  slides: 44, 
+  icon: '⬥',
+  pdf: 'MICRON-EQ LP  Modbus MFC SOP.pdf',
+  toc: [
+    {s:'完整手冊', items:['第1頁','第2頁','第3頁']}
+  ]
+}
 let cur = null, pdfDoc = null, curPage = 1, totalPages = 0, scale = 1.2, renderTask = null;
 
 // ── UI helpers ──

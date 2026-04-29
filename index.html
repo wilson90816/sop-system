@@ -6,11 +6,11 @@
 <title>機台 SOP 系統</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap');
-:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#e8eaf0;--text2:#8b92a8;--text3:#555e74;--blue:#4a9eff;--green:#3ecf8e;--amber:#f5a623;--red:#ff6b6b;}
+:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#e8eaf0;--text2:#8b92a8;--text3:#555e74;--blue:#4a9eff;--green:#3ecf8e;--amber:#f5a623;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:52px;background:rgba(15,17,23,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 20px;}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:52px;background:rgba(15,17,23,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px;}
 .logo{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;letter-spacing:0.1em;white-space:nowrap;}
 .logo span{color:var(--blue);}
 .search-wrap{flex:1;max-width:320px;display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;transition:border-color .2s;}
@@ -18,7 +18,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .search-wrap input{border:none;background:transparent;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);outline:none;width:100%;}
 .search-wrap input::placeholder{color:var(--text3);}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.back-btn{display:none;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:5px 13px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .15s;}
+.back-btn{display:none;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:5px 13px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .2s;}
 .back-btn:hover{border-color:var(--blue);color:var(--blue);}
 .back-btn.show{display:flex;}
 .cur-label{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
@@ -64,7 +64,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .t-gray{background:rgba(255,255,255,.06);color:var(--text3);}
 .card-arr{margin-left:auto;color:var(--text3);font-size:15px;transition:all .2s;}
 .card:hover .card-arr{transform:translateX(3px);color:var(--text2);}
-.add-card{border:1px dashed var(--border2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;gap:8px;color:var(--text3);cursor:default;border-radius:12px;opacity:.5;}
+.add-card{border:1px dashed var(--border2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;gap:8px;color:var(--text3);cursor:default;}
 
 #viewer{display:none;padding-top:52px;height:100vh;}
 .v-layout{display:grid;grid-template-columns:240px 1fr;height:calc(100vh - 52px);}
@@ -81,7 +81,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .nav-it.act-blue{background:rgba(74,158,255,.1);}
 .nav-it.act-green{background:rgba(62,207,142,.1);}
 .nav-it.act-amber{background:rgba(245,166,35,.1);}
-.n-num{width:18px;height:18px;border-radius:4px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0;transition:all .15s;}
+.n-num{width:18px;height:18px;border-radius:4px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
 .act-blue .n-num{background:var(--blue);border-color:var(--blue);color:#fff;}
 .act-green .n-num{background:var(--green);border-color:var(--green);color:#fff;}
 .act-amber .n-num{background:var(--amber);border-color:var(--amber);color:#fff;}
@@ -93,15 +93,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .v-main{display:flex;flex-direction:column;background:#12121e;overflow:hidden;}
 .v-toolbar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);}
 .pg-nav{display:flex;align-items:center;gap:6px;}
-.nb{width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.nb{width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .nb:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
 .nb:disabled{opacity:.3;cursor:not-allowed;}
 .pg-ind{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);min-width:60px;text-align:center;}
 .zoom-c{display:flex;align-items:center;gap:6px;margin-left:auto;}
-.zb{width:26px;height:26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.zb{width:26px;height:26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .zb:hover{border-color:var(--blue);color:var(--blue);}
 .z-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);min-width:40px;text-align:center;}
-.fit-b{padding:0 10px;height:26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:11px;display:flex;align-items:center;transition:all .15s;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;}
+.fit-b{padding:0 10px;height:26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:11px;display:flex;align-items:center;transition:all .2s;}
 .fit-b:hover{border-color:var(--blue);color:var(--blue);}
 
 .pdf-area{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:16px;position:relative;}
@@ -211,11 +211,11 @@ const MACHINES = [
       {s:'元件規格與氣路', items:['各元件用料規格','氣路圖','保壓測試']},
       {s:'機台檢查', items:['檢查項目1','檢查項目2','送電前配置1','送電前配置2','送電前配置3']},
       {s:'元件設定', items:['流量計設定1','流量計設定2','流量計設定3','壓力計設定1','壓力計設定2']},
-      {s:'HMI參數設定', items:['Config初始化','參數確認表','Config1','Config2','Config3','Pressure1','Pressure2','Pressure3','Pressure4','Flow1','Flow2','Flow3','Purge Time','Door設定','隱藏頁面']},
+      {s:'HMI參數設定', items:['Config初始化','參數確認表','Config1','Config2','Config3','Pressure1','Pressure2','Pressure3','Pressure4','Flow1','Flow2','Flow3','Purge Time','Door設定','[...]
       {s:'含氧檢測器', items:['電源開啟','配對設定','IP配置圖','IP設定','Alarm下限','顯示模式','B接點模式']},
       {s:'HMI工程師設定', items:['工程師設定1','工程師設定2','工程師設定3','工程師設定4']},
       {s:'抽氣調整', items:['抽氣調整1','抽氣調整2']},
-      {s:'功能測試', items:['N2/CDA閥測試','各Port Door測試','電控箱主門測試','O2測試','GUI充氣規範1','GUI充氣規範3','GUI config設定','GUI config OHC模式','Recipe說明(N2)','Recipe說明(OHC)','OHC功能測試']},
+      {s:'功能測試', items:['N2/CDA閥測試','各Port Door測試','電控箱主門測試','O2測試','GUI充氣規範1','GUI充氣規範3','GUI config設定','GUI config OHC模式','Recipe說明([...]
       {s:'PLC軟體', items:['安裝1','安裝2','安裝3','安裝4','安裝5','安裝6','安裝7','程式燒錄1','程式燒錄2']},
     ]
   },
@@ -243,7 +243,7 @@ const MACHINES = [
     color: 'green', tags: ['Standalone','OHB','N2'], slides: 30, icon: '⬢',
     pdf: 'TSMC- Standalone _ OHB N2 for injector type SOP.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','第17頁','第18頁','第19頁','第20頁','第21頁','第22頁','第23頁','第24頁','第25頁','第26頁','第27頁','第28頁','第29頁','第30頁']},
+      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','[...]
     ]
   },
   {
@@ -253,7 +253,7 @@ const MACHINES = [
     color: 'green', tags: ['EQ','LP','無MFC'], slides: 20, icon: '⊡',
     pdf: 'TSMC-EQ LP 無MFC SOP.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','第17頁','第18頁','第19頁','第20頁']},
+      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','[...]
     ]
   },
   {
@@ -263,7 +263,7 @@ const MACHINES = [
     color: 'green', tags: ['Turn State','Dummy'], slides: 20, icon: '⟐',
     pdf: 'TSMC-Turn State Dummy SOP.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','第17頁','第18頁','第19頁','第20頁']},
+      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','[...]
     ]
   },
   {
@@ -273,7 +273,7 @@ const MACHINES = [
     color: 'green', tags: ['充電','系統'], slides: 20, icon: '⚡',
     pdf: 'TSMC-充電系統.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','第17頁','第18頁','第19頁','第20頁']},
+      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁','[...]
     ]
   },
   {
@@ -286,37 +286,39 @@ const MACHINES = [
       {s:'氣路與保壓', items:['封面','氣路圖','保壓測試']},
       {s:'機台檢查與參數', items:['機台檢查測試項目','設備參數設定']},
     ]
+  },
+  {
+    id: 'psmc', 
+    customer: 'PSMC', 
+    title: 'PSMC 機台',
+    subtitle: 'PSMC SOP 手冊',
+    desc: 'PSMC 機台測試 SOP',
+    color: 'yellow', 
+    tags: ['PSMC','SOP'], 
+    slides: 53, 
+    icon: '◆',
+    pdf: 'PSMC-EQ LP (modbus) SOP.pdf',
+    toc: [
+      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁']}
+    ]
+  },
+  {
+    id: 'micron', 
+    customer: 'MICRON', 
+    title: 'MICRON 機台',
+    subtitle: 'MICRON SOP 手冊',
+    desc: 'MICRON 機台測試 SOP',
+    color: 'red', 
+    tags: ['MICRON','SOP'], 
+    slides: 44, 
+    icon: '⬥',
+    pdf: 'MICRON-EQ LP  Modbus MFC SOP.pdf',
+    toc: [
+      {s:'完整手冊', items:['第1頁','第2頁','第3頁']}
+    ]
   }
 ];
-{
-  id: 'psmc', 
-  customer: 'PSMC', 
-  title: 'PSMC 機台',
-  subtitle: 'PSMC SOP 手冊',
-  desc: 'PSMC 機台測試 SOP',
-  color: 'yellow', 
-  tags: ['PSMC','SOP'], 
-  slides: 53, 
-  icon: '◆',
-  pdf: 'PSMC-EQ LP (modbus) SOP.pdf',
-  toc: [
-    {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁']}
-  ]
-{
-  id: 'micron', 
-  customer: 'MICRON', 
-  title: 'MICRON 機台',
-  subtitle: 'MICRON SOP 手冊',
-  desc: 'MICRON 機台測試 SOP',
-  color: 'red', 
-  tags: ['MICRON','SOP'], 
-  slides: 44, 
-  icon: '⬥',
-  pdf: 'MICRON-EQ LP  Modbus MFC SOP.pdf',
-  toc: [
-    {s:'完整手冊', items:['第1頁','第2頁','第3頁']}
-  ]
-}
+
 let cur = null, pdfDoc = null, curPage = 1, totalPages = 0, scale = 1.2, renderTask = null;
 
 // ── UI helpers ──

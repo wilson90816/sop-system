@@ -250,30 +250,59 @@ const MACHINES = [
     id: 'standalone_ohb', customer: '台積電', title: 'Standalone OHB N2',
     subtitle: 'Injector Type SOP',
     desc: 'Standalone / OHB N2 Injector Type 測試 SOP',
-    color: 'green', tags: ['Standalone','OHB','N2'], slides: 30, icon: '⬢',
+    color: 'green', tags: ['Standalone','OHB','N2'], slides: 50, icon: '⬢',
     pdf: 'TSMC- Standalone _ OHB N2 for injector type SOP.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
+      {s:'Standalone架構', items:['架構1','架構2','架構3','架構4','氣路圖','保壓測試']},
+      {s:'OHB N2架構', items:['OHB架構1','OHB架構2','OHB架構3','OHB氣路圖','OHB保壓測試']},
+      {s:'機台檢查測試', items:['測試項目1','測試項目2']},
+      {s:'數位流量計設定', items:['流量計設定1','流量計設定2','流量計設定3']},
+      {s:'壓力計參數設定', items:['壓力計設定1','壓力計設定2']},
+      {s:'HMI Config設定', items:['Config 1','Config 2','Config 3','Pressure 1','Pressure 2','Pressure 3','Pressure 4','Flow 1','Flow 2','Flow 3','Purge Time']},
+      {s:'HMI工程師設定', items:['工程師設定1','工程師設定2','工程師設定3','工程師設定4']},
+      {s:'Clamp速度調整', items:['速度調整1','速度調整2','速度調整3','速度調整4']},
+      {s:'Standalone抽氣調整', items:['抽氣調整1','抽氣調整2','抽氣調整3']},
+      {s:'OHB N2抽氣調整', items:['OHB抽氣1','OHB抽氣2','OHB抽氣3']},
+      {s:'測機規範', items:['規範1','規範2','規範3','規範4','規範5','規範6']},
     ]
   },
   {
     id: 'eq_lp', customer: '台積電', title: 'EQ LP 無MFC',
     subtitle: 'EQ LP 無MFC SOP',
     desc: 'EQ LP 無 MFC 機台測試 SOP',
-    color: 'green', tags: ['EQ','LP','無MFC'], slides: 20, icon: '⊡',
+    color: 'green', tags: ['EQ','LP','無MFC'], slides: 37, icon: '⊡',
     pdf: 'TSMC-EQ LP 無MFC SOP.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
+      {s:'LP盤架構', items:['LP盤架構','電氣路元件選型','氣路圖','Modbus元件參數設定表']},
+      {s:'通訊設定', items:['類比指撥(上板)','通訊設定(下板)']},
+      {s:'LP壓力開關', items:['改裝元件','組裝圖','電路接法','安裝圖','調整與測試1','調整與測試2']},
+      {s:'數位流量計設定', items:['流量計設定1','流量計設定2','流量計設定3']},
+      {s:'溼度計設定', items:['溼度計設定1','溼度計設定2','溼度計設定3']},
+      {s:'壓力計設定', items:['壓力計設定1','壓力計設定2']},
+      {s:'充氣流量設定', items:['充氣流量設定1','充氣流量設定2']},
+      {s:'參數表', items:['參數表1','參數表2','參數表3']},
+      {s:'測試', items:['測試1','測試2']},
+      {s:'GUI說明', items:['Main Form','功能列說明1','功能列說明2','快捷鍵說明','Load Port Status說明','HMI說明','Query充氣Data','Log查詢']},
     ]
   },
   {
     id: 'turn_state', customer: '台積電', title: 'Turn State Dummy',
     subtitle: 'Turn State Dummy SOP',
     desc: 'Turn State Dummy 機台測試 SOP',
-    color: 'green', tags: ['Turn State','Dummy'], slides: 20, icon: '⟐',
+    color: 'green', tags: ['Turn State','Dummy'], slides: 55, icon: '⟐',
     pdf: 'TSMC-Turn State Dummy SOP.pdf',
     toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
+      {s:'檢查與測試', items:['檢查、測試項目']},
+      {s:'HMI操作', items:['HMI參數設定步驟1-2','HMI參數設定步驟3','MENU切換','旋轉台設定','旋轉台按鈕','旋轉台校正']},
+      {s:'PLC設定', items:['PLC硬體通訊線配置']},
+      {s:'台達驅動參數設定', items:['驅動器正視圖','驅動參數表']},
+      {s:'燈號與Safety測試', items:['燈號測試-Alarm','按鈕測試-Reset','燈號測試-Presence1','燈號測試-Presence2','Safety test']},
+      {s:'HMI隱藏頁面', items:['密碼設定','功能操作-Cycle run','功能操作-微調調整']},
+      {s:'IPC設定與軟體安裝', items:['建立使用者','電腦管理','Administrator密碼','刪除MyUser','登出','軟體安裝清單','GUI安裝介紹','MDLP主程式安裝','資料庫安裝','安裝流程','複製temp資料夾','NportDriver安裝','NportDriver安裝流程','Windows Update','防毒軟體安裝','防毒軟體掃描']},
+      {s:'GUI License與設定', items:['License啟動方式1','License啟動方式2','GUI參數設定-登入','GUI參數設定-Equipment','GUI參數設定-HSMS','GUI參數設定-Controller']},
+      {s:'Nport設定', items:['硬體通訊配線架構','Nport設定1-3','Nport設定4-5','Port1參數','Port2參數','Port3參數']},
+      {s:'PLC程式安裝', items:['IPC網卡設定','PLC參數與程式安裝']},
+      {s:'SECS連線測試', items:['連線測試1','連線測試2','連線測試3','連線測試4','連線測試5']},
     ]
   },
   {

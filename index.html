@@ -1,515 +1,251 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>機台 SOP 系統</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap');
-:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#e8eaf0;--text2:#8b92a8;--text3:#555e74;--blue:#4a9eff;--green:#3ecf8e;--amber:#f5a623;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOP 系統</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:52px;background:rgba(15,17,23,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px;}
-.logo{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;letter-spacing:0.1em;white-space:nowrap;}
-.logo span{color:var(--blue);}
-.search-wrap{flex:1;max-width:320px;display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;transition:border-color .2s;}
-.search-wrap:focus-within{border-color:var(--blue);}
-.search-wrap input{border:none;background:transparent;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);outline:none;width:100%;}
-.search-wrap input::placeholder{color:var(--text3);}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.back-btn{display:none;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:5px 13px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .2s;}
-.back-btn:hover{border-color:var(--blue);color:var(--blue);}
-.back-btn.show{display:flex;}
-.cur-label{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+    body {
+      font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-#home{padding:72px 24px 40px;max-width:1080px;margin:0 auto;}
-.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:10px;}
-.h-title{font-size:28px;font-weight:700;margin-bottom:8px;}
-.h-sub{font-size:14px;color:var(--text2);margin-bottom:40px;line-height:1.7;}
+    header {
+      background: #1a1a2e;
+      color: white;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
 
-#search-panel{display:none;margin-bottom:28px;}
-#search-panel h3{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
-.s-hit{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;margin-bottom:6px;cursor:pointer;transition:border-color .15s;}
-.s-hit:hover{border-color:var(--blue);}
-.s-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace;flex-shrink:0;}
-.sb-blue{background:rgba(74,158,255,.12);color:var(--blue);}
-.sb-green{background:rgba(62,207,142,.12);color:var(--green);}
-.sb-amber{background:rgba(245,166,35,.12);color:var(--amber);}
-.s-hit-text{font-size:13px;color:var(--text);}
-.s-hit-text mark{background:rgba(245,166,35,.25);color:var(--amber);border-radius:2px;}
-.s-hit-sub{font-size:11px;color:var(--text3);}
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
 
-.sec-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--text3);text-transform:uppercase;margin-bottom:14px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s;}
-.card:hover{border-color:var(--border2);transform:translateY(-2px);}
-.card:hover::before{opacity:1;}
-.c-blue::before{background:var(--blue);}
-.c-green::before{background:var(--green);}
-.c-amber::before{background:var(--amber);}
-.card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:12px;}
-.ci-blue{background:rgba(74,158,255,.12);}
-.ci-green{background:rgba(62,207,142,.12);}
-.ci-amber{background:rgba(245,166,35,.12);}
-.card-cust{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
-.card-title{font-size:15px;font-weight:700;margin-bottom:6px;}
-.card-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
-.card-foot{display:flex;align-items:center;gap:6px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
-.tag{font-size:10px;padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;}
-.t-blue{background:rgba(74,158,255,.12);color:var(--blue);}
-.t-green{background:rgba(62,207,142,.12);color:var(--green);}
-.t-amber{background:rgba(245,166,35,.12);color:var(--amber);}
-.t-gray{background:rgba(255,255,255,.06);color:var(--text3);}
-.card-arr{margin-left:auto;color:var(--text3);font-size:15px;transition:all .2s;}
-.card:hover .card-arr{transform:translateX(3px);color:var(--text2);}
-.add-card{border:1px dashed var(--border2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;gap:8px;color:var(--text3);cursor:default;}
+    header span.badge {
+      background: #e94560;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
 
-#viewer{display:none;padding-top:52px;height:100vh;}
-.v-layout{display:grid;grid-template-columns:240px 1fr;height:calc(100vh - 52px);}
-.v-sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.v-sidebar-head{padding:14px;border-bottom:1px solid var(--border);}
-.v-mname{font-size:13px;font-weight:700;margin-bottom:2px;}
-.v-msub{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
-.v-nav{flex:1;overflow-y:auto;padding:6px 0;}
-.v-nav::-webkit-scrollbar{width:3px;}
-.v-nav::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
-.nav-sec{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:9px 12px 3px;}
-.nav-it{display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;transition:background .1s;}
-.nav-it:hover{background:rgba(255,255,255,.04);}
-.nav-it.act-blue{background:rgba(74,158,255,.1);}
-.nav-it.act-green{background:rgba(62,207,142,.1);}
-.nav-it.act-amber{background:rgba(245,166,35,.1);}
-.n-num{width:18px;height:18px;border-radius:4px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
-.act-blue .n-num{background:var(--blue);border-color:var(--blue);color:#fff;}
-.act-green .n-num{background:var(--green);border-color:var(--green);color:#fff;}
-.act-amber .n-num{background:var(--amber);border-color:var(--amber);color:#fff;}
-.n-lbl{font-size:11px;color:var(--text2);line-height:1.3;}
-.act-blue .n-lbl{color:var(--blue);font-weight:500;}
-.act-green .n-lbl{color:var(--green);font-weight:500;}
-.act-amber .n-lbl{color:var(--amber);font-weight:500;}
+    .layout {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+    }
 
-.v-main{display:flex;flex-direction:column;background:#12121e;overflow:hidden;}
-.v-toolbar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);}
-.pg-nav{display:flex;align-items:center;gap:6px;}
-.nb{width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.nb:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
-.nb:disabled{opacity:.3;cursor:not-allowed;}
-.pg-ind{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);min-width:60px;text-align:center;}
-.zoom-c{display:flex;align-items:center;gap:6px;margin-left:auto;}
-.zb{width:26px;height:26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.zb:hover{border-color:var(--blue);color:var(--blue);}
-.z-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);min-width:40px;text-align:center;}
-.fit-b{padding:0 10px;height:26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-size:11px;display:flex;align-items:center;transition:all .2s;}
-.fit-b:hover{border-color:var(--blue);color:var(--blue);}
+    /* 側邊欄 */
+    .sidebar {
+      width: 280px;
+      background: white;
+      border-right: 1px solid #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-.pdf-area{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:16px;position:relative;}
-.pdf-area::-webkit-scrollbar{width:6px;height:6px;}
-.pdf-area::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
-#pdf-canvas{border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,.7);display:block;}
+    .sidebar-header {
+      padding: 16px 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #f0f0f0;
+    }
 
-.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:40px;}
-.overlay.hidden{display:none;}
-.spinner{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.ov-icon{font-size:36px;opacity:.35;}
-.ov-title{font-size:15px;font-weight:500;color:var(--text);}
-.ov-desc{font-size:13px;color:var(--text2);max-width:360px;line-height:1.7;}
-</style>
+    .sop-list {
+      list-style: none;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .sop-list li {
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .sop-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .sop-list li a:hover {
+      background: #f0f4ff;
+      color: #1a1a2e;
+    }
+
+    .sop-list li a.active {
+      background: #eef1fb;
+      color: #1a1a2e;
+      font-weight: 600;
+      border-left: 3px solid #e94560;
+    }
+
+    .sop-list li a .icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .sop-list li a .name {
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    /* 主內容區 */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .toolbar {
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toolbar .doc-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .toolbar .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1a2e;
+      color: white;
+      padding: 7px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+
+    .toolbar .btn:hover {
+      background: #e94560;
+    }
+
+    .pdf-container {
+      flex: 1;
+      background: #525659;
+      overflow: hidden;
+    }
+
+    .pdf-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #aaa;
+      gap: 12px;
+    }
+
+    .placeholder .big-icon {
+      font-size: 4rem;
+    }
+
+    .placeholder p {
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo">SOP<span>.</span>SYS</div>
-  <div class="search-wrap">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="search-input" placeholder="搜尋機種、型號、關鍵字...">
-  </div>
-  <div class="topbar-right">
-    <span class="cur-label" id="cur-label"></span>
-    <button class="back-btn" id="back-btn" onclick="goHome()">← 返回列表</button>
-  </div>
-</div>
+<header>
+  <h1>📋 SOP 系統</h1>
+  <span class="badge">INTERNAL</span>
+</header>
 
-<div id="home">
-  <div class="eyebrow">機台測試 SOP 管理系統</div>
-  <div class="h-title">選擇機種，開始測試</div>
-  <div class="h-sub">點選機種卡片即可開啟完整手冊，含原始圖片。</div>
-  <div id="search-panel"><h3 id="s-count"></h3><div id="s-list"></div></div>
-  <div id="grid-wrap">
-    <div class="sec-label">已建立機種</div>
-    <div class="grid" id="grid"></div>
-  </div>
-</div>
+<div class="layout">
 
-<div id="viewer">
-  <div class="v-layout">
-    <div class="v-sidebar">
-      <div class="v-sidebar-head">
-        <div class="v-mname" id="v-mname"></div>
-        <div class="v-msub" id="v-msub"></div>
-      </div>
-      <div class="v-nav" id="v-nav"></div>
+  <!-- 側邊欄：SOP 清單 -->
+  <aside class="sidebar">
+    <div class="sidebar-header">SOP 文件清單</div>
+    <ul class="sop-list" id="sopList">
+      <li>
+        <a href="#" class="active" onclick="openPDF(this, 'sop-files/NTC OHBN2 Operation Guide.pdf', 'NTC OHBN2 Operation Guide')">
+          <span class="icon">📄</span>
+          <span class="name">NTC OHBN2 Operation Guide</span>
+        </a>
+      </li>
+      <!-- 之後新增 SOP 在這裡加 <li> -->
+    </ul>
+  </aside>
+
+  <!-- 主內容區 -->
+  <main class="main">
+    <div class="toolbar">
+      <span class="doc-title" id="docTitle">NTC OHBN2 Operation Guide</span>
+      <a href="#" class="btn" id="downloadBtn" download>
+        ⬇ 下載 PDF
+      </a>
     </div>
-    <div class="v-main">
-      <div class="v-toolbar">
-        <div class="pg-nav">
-          <button class="nb" id="prev-btn" onclick="prevPage()">‹</button>
-          <span class="pg-ind" id="pg-ind">— / —</span>
-          <button class="nb" id="next-btn" onclick="nextPage()">›</button>
-        </div>
-        <div class="zoom-c">
-          <button class="zb" onclick="zoomOut()">−</button>
-          <span class="z-lbl" id="z-lbl">100%</span>
-          <button class="zb" onclick="zoomIn()">+</button>
-          <button class="fit-b" onclick="fitPage()">符合頁面</button>
-        </div>
-      </div>
-      <div class="pdf-area" id="pdf-area">
-        <div class="overlay" id="overlay">
-          <div class="spinner" id="ov-spinner"></div>
-          <div class="ov-icon hidden" id="ov-icon"></div>
-          <div class="ov-title" id="ov-title">載入中...</div>
-          <div class="ov-desc" id="ov-desc"></div>
-        </div>
-        <canvas id="pdf-canvas" style="display:none"></canvas>
-      </div>
+    <div class="pdf-container">
+      <iframe id="pdfViewer"
+        src="sop-files/NTC%20OHBN2%20Operation%20Guide.pdf"
+        title="PDF Viewer">
+      </iframe>
     </div>
-  </div>
+  </main>
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  function openPDF(el, pdfPath, title) {
+    // 移除所有 active
+    document.querySelectorAll('.sop-list a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
 
-const MACHINES = [
-  {
-    id: 'ohb', customer: '南亞科技', title: '南亞科 OHB',
-    subtitle: 'PCB Modbus MFC Type',
-    desc: 'Modbus 通訊、MFC/溼度計設定、Purge 測試、PLC 初始化',
-    color: 'blue', tags: ['Modbus','MFC','RS-485'], slides: 34, icon: '⬡',
-    pdf: 'ohb_sop.pdf',
-    toc: [
-      {s:'架構與氣路', items:['LP盤架構','Port電氣路元件','Inlet氣路圖','Outlet氣路圖']},
-      {s:'保壓測試', items:['Inlet保壓','Outlet保壓']},
-      {s:'PLC / Modbus', items:['PLC Port1設定','RFID設定1','RFID設定2','RFID設定3','Modbus元件參數表']},
-      {s:'MFC設定', items:['Step1 軟體連線','Step2 Connection','Step3 站號設定','Step4 送電確認','Step4 重新確認']},
-      {s:'溼度計設定', items:['Step1 連線','Step2 校正參數','Step3 Modbus設定']},
-      {s:'出機測試', items:['Purge濕度規範','斷電充氣功能']},
-      {s:'HMI', items:['HMI使用說明','HMI Home','HMI Protocol 1','HMI Protocol 2','HMI Value Table','HMI Report','HMI Other','HMI About','HMI Config 1','HMI Config 2']},
-      {s:'PLC初始化', items:['X07初始化1','X07初始化2']},
-    ]
-  },
-  {
-    id: 'zipstk', customer: '台積電', title: 'ZIP STK',
-    subtitle: '教育訓練手冊 Vel7',
-    desc: '氣路保壓、流量計/壓力計設定、HMI參數、含氧檢測器、抽氣調整',
-    color: 'green', tags: ['ZIP','STK','O2'], slides: 62, icon: '◈',
-    pdf: 'zipstk_sop.pdf',
-    toc: [
-      {s:'元件規格與氣路', items:['各元件用料規格','氣路圖','保壓測試']},
-      {s:'機台檢查', items:['檢查項目1','檢查項目2','送電前配置1','送電前配置2','送電前配置3']},
-      {s:'元件設定', items:['流量計設定1','流量計設定2','流量計設定3','壓力計設定1','壓力計設定2']},
-      {s:'HMI參數設定', items:['Config初始化','參數確認表','Config1','Config2','Config3','Pressure1','Pressure2','Pressure3','Pressure4','Flow1','Flow2','Flow3','Purge Time','Door設定']},
-      {s:'含氧檢測器', items:['電源開啟','配對設定','IP配置圖','IP設定','Alarm下限','顯示模式','B接點模式']},
-      {s:'HMI工程師設定', items:['工程師設定1','工程師設定2','工程師設定3','工程師設定4']},
-      {s:'抽氣調整', items:['抽氣調整1','抽氣調整2']},
-      {s:'功能測試', items:['N2/CDA閥測試','各Port Door測試','電控箱主門測試','O2測試','GUI充氣規範1','GUI充氣規範3','GUI config設定','GUI config OHC模式']},
-      {s:'PLC軟體', items:['安裝1','安裝2','安裝3','安裝4','安裝5','安裝6','安裝7','程式燒錄1','程式燒錄2']},
-    ]
-  },
-  {
-    id: 'panel_foup', customer: '台積電', title: 'Panel FOUP Injector',
-    subtitle: 'Injector Type 教育訓練手冊',
-    desc: 'Panel FOUP 氣路保壓、流量計/壓力計設定、設備參數、Clamp速度調整、抽氣調整',
-    color: 'green', tags: ['Panel','Injector','Clamp'], slides: 32, icon: '▣',
-    pdf: 'TSMC-Panel FOUP_injector type SOP.pdf',
-    toc: [
-      {s:'氣路與保壓', items:['封面','氣路圖','保壓測試']},
-      {s:'機台檢查', items:['檢查測試項目1']},
-      {s:'元件設定', items:['流量計設定1','流量計設定2','流量計設定3','壓力計設定1','壓力計設定2']},
-      {s:'設備參數', items:['標準參數確認','參數設定(Engineer)','參數設定(Valve)','參數設定(Alarm)','參數設定(Misc)','參數寫入方式','參數寫入確認']},
-      {s:'HMI工程師設定', items:['工程師設定1','工程師設定2','工程師設定3','工程師設定4']},
-      {s:'Clamp速度調整', items:['Clamp調整1','Clamp調整2','Clamp調整3','Clamp調整4']},
-      {s:'抽氣調整', items:['抽氣調整1','抽氣調整2']},
-      {s:'測機規範', items:['測機規範1','測機規範2','測機規範3','測機規範4','測機規範5','測機規範6']},
-    ]
-  },
-  {
-    id: 'standalone_ohb', customer: '台積電', title: 'Standalone OHB N2',
-    subtitle: 'Injector Type SOP',
-    desc: 'Standalone / OHB N2 Injector Type 測試 SOP',
-    color: 'green', tags: ['Standalone','OHB','N2'], slides: 30, icon: '⬢',
-    pdf: 'TSMC- Standalone _ OHB N2 for injector type SOP.pdf',
-    toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
-    ]
-  },
-  {
-    id: 'eq_lp', customer: '台積電', title: 'EQ LP 無MFC',
-    subtitle: 'EQ LP 無MFC SOP',
-    desc: 'EQ LP 無 MFC 機台測試 SOP',
-    color: 'green', tags: ['EQ','LP','無MFC'], slides: 20, icon: '⊡',
-    pdf: 'TSMC-EQ LP 無MFC SOP.pdf',
-    toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
-    ]
-  },
-  {
-    id: 'turn_state', customer: '台積電', title: 'Turn State Dummy',
-    subtitle: 'Turn State Dummy SOP',
-    desc: 'Turn State Dummy 機台測試 SOP',
-    color: 'green', tags: ['Turn State','Dummy'], slides: 20, icon: '⟐',
-    pdf: 'TSMC-Turn State Dummy SOP.pdf',
-    toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
-    ]
-  },
-  {
-    id: 'charging', customer: '台積電', title: '充電系統',
-    subtitle: '充電系統 SOP',
-    desc: '充電系統機台測試 SOP',
-    color: 'green', tags: ['充電','系統'], slides: 20, icon: '⚡',
-    pdf: 'TSMC-充電系統.pdf',
-    toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁','第11頁','第12頁','第13頁','第14頁','第15頁','第16頁']}
-    ]
-  },
-  {
-    id: 'fumao_ohb', customer: '迅得/福懋科', title: '福懋科 OHB',
-    subtitle: '迅得福懋科OHB 教育訓練手冊',
-    desc: '氣路圖、保壓測試、機台檢查、設備參數設定（MFC/Purge/Alarm）',
-    color: 'amber', tags: ['福懋','OHB','MFC'], slides: 5, icon: '⬡',
-    pdf: 'SAA-福懋OHB SOP.pdf',
-    toc: [
-      {s:'氣路與保壓', items:['封面','氣路圖','保壓測試']},
-      {s:'機台檢查與參數', items:['機台檢查測試項目','設備參數設定']},
-    ]
-  },
-  {
-    id: 'psmc', 
-    customer: 'PSMC', 
-    title: 'PSMC 機台',
-    subtitle: 'PSMC SOP 手冊',
-    desc: 'PSMC 機台測試 SOP',
-    color: 'yellow', 
-    tags: ['PSMC','SOP'], 
-    slides: 53, 
-    icon: '◆',
-    pdf: 'PSMC-EQ LP (modbus) SOP.pdf',
-    toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁',,'第11頁','第12頁','第13頁','第14頁','第15頁','第16頁',,'第17頁','第18頁','第19頁','第20頁','第21頁','第22頁','第23頁','第24頁','第25頁','第26頁','第27頁','第28頁','第29頁','第30頁','第31頁','第32頁','第33頁','第34頁','第35頁','第36頁','第37頁','第38頁','第39頁','第40頁','第41頁','第42頁','第43頁','第44頁','第45頁','第46頁','第47頁','第48頁','第49頁','第50頁','第51頁','第52頁','第53頁']}
-    ]
-  },
-  {
-    id: 'micron', 
-    customer: 'MICRON', 
-    title: 'MICRON 機台',
-    subtitle: 'MICRON SOP 手冊',
-    desc: 'MICRON 機台測試 SOP',
-    color: 'red', 
-    tags: ['MICRON','SOP'], 
-    slides: 44, 
-    icon: '⬥',
-    pdf: 'MICRON-EQ LP  Modbus MFC SOP.pdf',
-    toc: [
-      {s:'完整手冊', items:['第1頁','第2頁','第3頁','第4頁','第5頁','第6頁','第7頁','第8頁','第9頁','第10頁',,'第11頁','第12頁','第13頁','第14頁','第15頁','第16頁',,'第17頁','第18頁','第19頁','第20頁','第21頁','第22頁','第23頁','第24頁','第25頁','第26頁','第27頁','第28頁','第29頁','第30頁','第31頁','第32頁','第33頁','第34頁','第35頁','第36頁','第37頁','第38頁','第39頁','第40頁','第41頁','第42頁','第43頁','第44頁']}
-    ]
+    // 更新標題
+    document.getElementById('docTitle').textContent = title;
+
+    // 更新 iframe
+    const encoded = pdfPath.split('/').map(p => encodeURIComponent(p)).join('/');
+    document.getElementById('pdfViewer').src = encoded;
+
+    // 更新下載按鈕
+    document.getElementById('downloadBtn').href = encoded;
+
+    return false;
   }
-];
-
-let cur = null, pdfDoc = null, curPage = 1, totalPages = 0, scale = 1.2, renderTask = null;
-
-// ── UI helpers ──
-function showOverlay(spinner, icon, title, desc) {
-  document.getElementById('ov-spinner').style.display = spinner ? 'block' : 'none';
-  const iconEl = document.getElementById('ov-icon');
-  iconEl.classList.toggle('hidden', spinner);
-  iconEl.textContent = icon || '';
-  document.getElementById('ov-title').textContent = title || '';
-  document.getElementById('ov-desc').textContent = desc || '';
-  document.getElementById('overlay').classList.remove('hidden');
-  document.getElementById('pdf-canvas').style.display = 'none';
-}
-function hideOverlay() {
-  document.getElementById('overlay').classList.add('hidden');
-  document.getElementById('pdf-canvas').style.display = 'block';
-}
-
-// ── Grid ──
-function renderGrid() {
-  const g = document.getElementById('grid');
-  g.innerHTML = '';
-  MACHINES.forEach(m => {
-    const d = document.createElement('div');
-    d.className = `card c-${m.color}`;
-    d.innerHTML = `
-      <div class="card-icon ci-${m.color}">${m.icon}</div>
-      <div class="card-cust">${m.customer}</div>
-      <div class="card-title">${m.title}</div>
-      <div class="card-desc">${m.desc}</div>
-      <div class="card-foot">
-        ${m.tags.map(t => `<span class="tag t-${m.color}">${t}</span>`).join('')}
-        <span class="tag t-gray">${m.slides}頁</span>
-        <span class="card-arr">→</span>
-      </div>`;
-    d.onclick = () => openMachine(m);
-    g.appendChild(d);
-  });
-  const add = document.createElement('div');
-  add.className = 'add-card';
-  add.innerHTML = '<div style="font-size:20px">＋</div><div style="font-size:12px">新增機種</div>';
-  g.appendChild(add);
-}
-
-// ── Open machine ──
-async function openMachine(m) {
-  cur = m;
-  document.getElementById('home').style.display = 'none';
-  document.getElementById('viewer').style.display = 'block';
-  document.getElementById('back-btn').classList.add('show');
-  document.getElementById('cur-label').textContent = m.title;
-  document.getElementById('v-mname').textContent = m.title;
-  document.getElementById('v-msub').textContent = m.subtitle;
-  renderNav(m);
-  showOverlay(true, '', '載入手冊中...');
-  try {
-    const resp = await fetch(m.pdf);
-    if (!resp.ok) throw new Error('fetch failed');
-    const buf = await resp.arrayBuffer();
-    await initPDF(new Uint8Array(buf));
-  } catch(e) {
-    showOverlay(false, '⚠', '載入失敗', '無法讀取 PDF，請確認網路連線後重新整理。');
-  }
-}
-
-async function initPDF(data) {
-  try {
-    pdfDoc = await pdfjsLib.getDocument({ data }).promise;
-    totalPages = pdfDoc.numPages;
-    curPage = 1;
-    hideOverlay();
-    await renderPage(curPage);
-    fitPage();
-  } catch(e) {
-    showOverlay(false, '⚠', 'PDF 解析失敗', '檔案可能損毀，請聯繫管理員。');
-  }
-}
-
-// ── Nav ──
-function renderNav(m) {
-  const nav = document.getElementById('v-nav');
-  nav.innerHTML = '';
-  let n = 1;
-  m.toc.forEach(sec => {
-    const sl = document.createElement('div');
-    sl.className = 'nav-sec';
-    sl.textContent = sec.s;
-    nav.appendChild(sl);
-    sec.items.forEach(item => {
-      const el = document.createElement('div');
-      el.className = 'nav-it';
-      el.dataset.page = n;
-      el.innerHTML = `<div class="n-num">${n}</div><div class="n-lbl">${item}</div>`;
-      el.onclick = () => jumpTo(parseInt(el.dataset.page));
-      nav.appendChild(el);
-      n++;
-    });
-  });
-}
-
-function updateNav(page) {
-  const c = cur ? cur.color : 'blue';
-  document.querySelectorAll('.nav-it').forEach(el => {
-    el.classList.remove('act-blue', 'act-green', 'act-amber');
-    if (parseInt(el.dataset.page) === page) el.classList.add(`act-${c}`);
-  });
-  const active = document.querySelector('.act-blue, .act-green, .act-amber');
-  if (active) active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-}
-
-// ── PDF render ──
-async function renderPage(n) {
-  if (!pdfDoc) return;
-  if (renderTask) { try { renderTask.cancel(); } catch(e) {} }
-  const page = await pdfDoc.getPage(n);
-  const vp = page.getViewport({ scale });
-  const canvas = document.getElementById('pdf-canvas');
-  canvas.width = vp.width;
-  canvas.height = vp.height;
-  renderTask = page.render({ canvasContext: canvas.getContext('2d'), viewport: vp });
-  try { await renderTask.promise; } catch(e) {}
-  document.getElementById('pg-ind').textContent = `${n} / ${totalPages}`;
-  document.getElementById('prev-btn').disabled = n <= 1;
-  document.getElementById('next-btn').disabled = n >= totalPages;
-  document.getElementById('z-lbl').textContent = Math.round(scale * 100) + '%';
-  updateNav(n);
-}
-
-async function prevPage() { if (curPage > 1) { curPage--; await renderPage(curPage); } }
-async function nextPage() { if (curPage < totalPages) { curPage++; await renderPage(curPage); } }
-async function jumpTo(n) { if (n >= 1 && n <= totalPages) { curPage = n; await renderPage(curPage); } }
-function zoomIn() { scale = Math.min(scale + 0.2, 3); renderPage(curPage); }
-function zoomOut() { scale = Math.max(scale - 0.2, 0.4); renderPage(curPage); }
-function fitPage() {
-  if (!pdfDoc) return;
-  pdfDoc.getPage(curPage).then(page => {
-    const area = document.getElementById('pdf-area');
-    const vp = page.getViewport({ scale: 1 });
-    scale = (area.clientWidth - 36) / vp.width;
-    renderPage(curPage);
-  });
-}
-
-// ── Search ──
-document.getElementById('search-input').addEventListener('input', function() {
-  const q = this.value.trim().toLowerCase();
-  const sp = document.getElementById('search-panel');
-  const gw = document.getElementById('grid-wrap');
-  if (!q) { sp.style.display = 'none'; gw.style.display = 'block'; return; }
-  const hits = [];
-  MACHINES.forEach(m => {
-    if ([m.customer, m.title, m.subtitle, ...m.tags].some(f => f.toLowerCase().includes(q)))
-      hits.push({ m, text: `${m.customer} ${m.title}`, sub: m.desc });
-    m.toc.forEach(sec => sec.items.forEach(item => {
-      if (item.toLowerCase().includes(q) || sec.s.toLowerCase().includes(q))
-        hits.push({ m, text: item, sub: `${m.title} › ${sec.s}` });
-    }));
-  });
-  const hl = t => t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), x => `<mark>${x}</mark>`);
-  document.getElementById('s-count').textContent = `找到 ${hits.length} 個結果`;
-  document.getElementById('s-list').innerHTML = hits.slice(0, 20).map(h => `
-    <div class="s-hit" onclick="openMachine(MACHINES.find(x=>x.id==='${h.m.id}'))">
-      <span class="s-badge sb-${h.m.color}">${h.m.title}</span>
-      <div>
-        <div class="s-hit-text">${hl(h.text)}</div>
-        <div class="s-hit-sub">${h.sub}</div>
-      </div>
-    </div>`).join('');
-  sp.style.display = 'block';
-  gw.style.display = hits.length ? 'none' : 'block';
-});
-
-function goHome() {
-  document.getElementById('viewer').style.display = 'none';
-  document.getElementById('home').style.display = 'block';
-  document.getElementById('back-btn').classList.remove('show');
-  document.getElementById('cur-label').textContent = '';
-  document.getElementById('search-input').value = '';
-  document.getElementById('search-panel').style.display = 'none';
-  document.getElementById('grid-wrap').style.display = 'block';
-  pdfDoc = null; cur = null;
-}
-
-document.addEventListener('keydown', e => {
-  if (document.getElementById('viewer').style.display === 'none') return;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextPage();
-  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevPage();
-  if (e.key === 'Escape') goHome();
-});
-
-renderGrid();
 </script>
+
 </body>
 </html>
